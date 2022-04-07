@@ -7,7 +7,8 @@ from utils.runners import run_session
 
 RESULTS_DIR = Path("results", time.strftime('%Y%m%d-%H%M%S'))
 
-CLEAN_STORAGE = False
+# Reset Stored Data. If you want to use previous stored data, make it false. If you want to clean stored data, make it true.
+RESET_STORAGE = False
 
 # create results directory if it does not exist
 if not RESULTS_DIR.exists():
@@ -33,7 +34,7 @@ settings = {
 }
 
 # run a session and obtain results in dictionaries
-session_results_trace, session_results_summary = run_session(settings, CLEAN_STORAGE)
+session_results_trace, session_results_summary = run_session(settings, RESET_STORAGE)
 
 # plot trace to html file
 if not session_results_trace["error"]:

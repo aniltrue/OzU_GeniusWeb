@@ -29,6 +29,7 @@ For VSCode devcontainer users: We included a devcontainer specification in the `
 - Read through the code to familiarise yourself with its workings. The agent already works but is not very good.
 - Develop your agent in the copied directory. Make sure that all the files that you use are in the directory.
 - Test your agent through `run.py`, results will be returned as dictionaries and saved as json-file. A plot of the negotiation trace will also be saved.
+- In `run.py` file, stored data will be cleaned if `RESET_STORAGE` is true. Otherwise, your agent can be use previous stored data.
 - You can also test your agent more extensively by running a tournament with a set of agents. Use the `run_tournament.py` script for this. Summaries of the results will be saved to the results directory.
 
 ## Documentation
