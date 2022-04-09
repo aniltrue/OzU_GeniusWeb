@@ -29,4 +29,6 @@ class AcceptanceStrategy:
         received_utility = get_utility(self.profile, received_bid)
         generated_utility = get_utility(self.profile, generated_bid)
 
-        return False
+        # AC_Next
+
+        return generated_utility <= received_utility

@@ -21,7 +21,8 @@ class LearningModel:
         self.data = {}
 
     def receive_bid(self, bid: Bid, **kwargs):
-        self.received_bids.append(bid)
+        if bid is not None:
+            self.received_bids.append(bid)
 
     def save_bid(self, bid: Bid, **kwargs):
         self.my_bids.append(bid)

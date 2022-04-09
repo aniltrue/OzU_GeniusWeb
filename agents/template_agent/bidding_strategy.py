@@ -23,7 +23,8 @@ class BiddingStrategy:
         @param kwargs:
         @return: None
         """
-        self.received_offers.append(bid)
+        if bid is not None:
+            self.received_offers.append(bid)
 
     def generate(self, **kwargs) -> Bid:
         """

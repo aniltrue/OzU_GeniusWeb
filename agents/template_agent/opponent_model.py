@@ -31,6 +31,9 @@ class OpponentModel:
         """
 
         # Add into offers list
+        if bid is None:
+            return
+
         self.offers.append(bid)
 
         # Call each issue object with corresponding received value.

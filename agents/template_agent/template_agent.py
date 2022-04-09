@@ -50,6 +50,7 @@ class TemplateAgent(DefaultParty):
         self.storage_dir: str = None
 
         self.last_received_bid: Bid = None
+        self.last_generated_bid: Bid = None
 
         # Modules
         self.opponent_model: OpponentModel = None
@@ -199,6 +200,11 @@ class TemplateAgent(DefaultParty):
             # set bid as last received
             self.last_received_bid = bid
 
+            self.log("Received Bid: %f" % get_utility(self.profile, self.last_received_bid))
+
+        elif isinstance(action, Accept):  # If opponent agent accepts my offer.
+            self.log("Opponent Accepted - Utility: %f" % get_utility(self.profile, self.last_generated_bid))
+
     def run(self):
         """
             Generate agent's action (Offer or Accept)
@@ -206,6 +212,10 @@ class TemplateAgent(DefaultParty):
         """
         # Generated bid by bidding strategy if the agent will not accept.
         bid = self.bidding_strategy.generate()
+        self.last_generated_bid = bid
+
+        if bid is None:
+            return
 
         # Check acceptance
         if self.acceptance_strategy.is_accepted(self.last_received_bid, bid):

@@ -49,6 +49,7 @@ class HybridAgent(DefaultParty):
         self.storage_dir: str = None
 
         self.last_received_bid: Bid = None
+        self.last_generated_bid: Bid = None
         self.opponent_model: OpponentModel = None
         self.acceptance_strategy: AcceptanceStrategy = None
         self.bidding_strategy: BiddingStrategy = None
@@ -90,7 +91,8 @@ class HybridAgent(DefaultParty):
                     self.other = str(actor).rsplit("_", 1)[0]
                     self.learning_model.load_data(self.storage_dir, self.other)
 
-                    self.bidding_strategy.update(self.learning_model.data["min_value"], self.log)
+                    self.bidding_strategy.update(self.learning_model.data, self.log)
+                    self.acceptance_strategy.update(self.learning_model.data, self.log)
 
                     self.log("Data loaded.")
 
@@ -113,14 +115,15 @@ class HybridAgent(DefaultParty):
         self.opponent_model = OpponentModel(self.domain, self.profile, self.progress, log=self.log)
         self.bidding_strategy = BiddingStrategy(self.profile, self.progress)
         self.acceptance_strategy = AcceptanceStrategy(self.profile, self.progress)
-        self.learning_model = LearningModel(self.profile, self.progress)
+        self.learning_model = LearningModel(self.profile, self.progress, opponent_model=self.opponent_model)
 
         if self.other is not None:
             self.learning_model.load_data(self.storage_dir, self.other)
 
             self.log("Data loaded.")
 
-        self.bidding_strategy.update(self.learning_model.data["min_value"], self.log)
+        self.bidding_strategy.update(self.learning_model.data, self.log)
+        self.acceptance_strategy.update(self.learning_model.data, self.log)
 
         self.log("%s is ready." % self.NAME)
 
@@ -153,14 +156,27 @@ class HybridAgent(DefaultParty):
 
             self.last_received_bid = bid
 
+            self.log("Received Bid: %f/%f" %
+                     (get_utility(self.profile, self.last_received_bid), self.opponent_model.get_utility(self.last_received_bid)))
+        elif isinstance(action, Accept):
+            self.log("Opponent Accepted - For me: %f, For opponent: %f" %
+                     (get_utility(self.profile, self.last_generated_bid), self.opponent_model.get_utility(self.last_generated_bid)))
+
     def run(self):
         bid = self.bidding_strategy.generate(log=self.log, opponent_model=self.opponent_model)
+        self.last_generated_bid = bid
+
+        if bid is None:
+            return
 
         if self.acceptance_strategy.is_accepted(self.last_received_bid, bid):
-            self.log("Accepted - My Bid: %f, Received: %f" % (get_utility(self.profile, bid), get_utility(self.profile, self.last_received_bid)))
+            self.log("Accepted - My Bid: %f/%f, Received: %f/%f" %
+                     (get_utility(self.profile, bid), self.opponent_model.get_utility(bid),
+                      get_utility(self.profile, self.last_received_bid), self.opponent_model.get_utility(self.last_received_bid)))
             self.getConnection().send(Accept(self.me, self.last_received_bid))
         else:
-            self.log("Offered: %f" % get_utility(self.profile, bid))
+            self.log("Offered: %f/%f" %
+                     (get_utility(self.profile, bid), self.opponent_model.get_utility(bid)))
             self.learning_model.save_bid(bid)
             self.getConnection().send(Offer(self.me, bid))
 

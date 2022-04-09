@@ -41,7 +41,7 @@ def run_session(settings, clean_storage: bool = False) -> Tuple[dict, dict]:
                 storage_dir = Path(agent["parameters"]["storage_dir"])
                 if storage_dir.exists() and clean_storage:
                     shutil.rmtree(storage_dir)
-                elif not storage_dir.exists():
+                if not storage_dir.exists():
                     storage_dir.mkdir(parents=True)
 
     # file path to uri

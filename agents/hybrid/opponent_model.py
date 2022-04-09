@@ -21,7 +21,7 @@ class OpponentModel:
     issues: dict
     alpha: float = .1
     beta: float = 5.
-    window_size: int = 3
+    window_size: int = 5
 
     def __init__(self, domain: Domain, profile: LinearAdditiveUtilitySpace, progress: ProgressTime, **kwargs):
         self.domain = domain
@@ -35,6 +35,9 @@ class OpponentModel:
         self.log_fn = kwargs["log"]
 
     def update(self, bid: Bid, **kwargs):
+        if bid is None:
+            return
+
         self.offers.append(bid)
 
         previous_bid = {issue: self.offers[-2].getValue(issue) for issue in self.issues.keys()}\
@@ -73,7 +76,7 @@ class OpponentModel:
         for issue_name, issue_obj in self.issues.items():
             fr_current = frequency(current_window, issue_name, issue_obj)
             fr_previous = frequency(previous_window, issue_name, issue_obj)
-            p_val = chisquare(fr_previous, fr_current, ddof=1)[1]
+            p_val = chisquare(fr_previous, fr_current)[1]
 
             if p_val > 0.05:
                 not_changed.append(issue_obj)

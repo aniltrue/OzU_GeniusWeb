@@ -8,7 +8,6 @@ from geniusweb.profile.utilityspace.LinearAdditiveUtilitySpace import (
 from geniusweb.progress.ProgressTime import ProgressTime
 from time import time
 
-
 """
     Some useful functions
 """
@@ -43,12 +42,14 @@ def get_bid_at(profile: LinearAdditiveUtilitySpace, utility: float) -> Bid:
     return closest
 
 
-def get_bids_at(profile: LinearAdditiveUtilitySpace, utility: float, threshold: float = 0.02) -> list:
+def get_bids_at(profile: LinearAdditiveUtilitySpace, utility: float, lower_bound: float = 0.02,
+                upper_bound: float = 0.02) -> list:
     """
-        Get bids between [utility - threshold, utility + threshold]
+        Get bids between [utility - lower_bound, utility + upper_bound]
     @param profile: Profile
     @param utility: Desired Utility
-    @param threshold: Range threshold
+    @param lower_bound: Lower bound of the Range
+    @param upper_bound: Upper bound of the Range
     @return: List of bids in that range
     """
     domain = profile.getDomain()
@@ -57,7 +58,7 @@ def get_bids_at(profile: LinearAdditiveUtilitySpace, utility: float, threshold: 
     bids = []
 
     for i in range(1, all_bids.size()):
-        if abs(utility - get_utility(profile, all_bids.get(i))) <= threshold:
+        if utility - lower_bound <= get_utility(profile, all_bids.get(i)) <= utility + upper_bound:
             bids.append(all_bids.get(i))
 
     return bids
