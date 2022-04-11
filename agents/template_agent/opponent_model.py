@@ -46,6 +46,9 @@ class OpponentModel:
         @param bid: The bid will be calculated.
         @return: Estimated Utility
         """
+        if bid is None:
+            return 0.0
+
         total = 0.0
 
         for issue_name, issue_obj in self.issues.items():
@@ -71,6 +74,9 @@ class Issue:
         @param value: Received bid
         @return: None
         """
+        if value is None:
+            return
+
         pass
 
     def get_utility(self, value: Value) -> float:
@@ -79,4 +85,7 @@ class Issue:
         @param value: Value of Issue
         @return: Estimated Utility
         """
+        if value is None:
+            return 0.0
+
         return self.weight * self.value_weights[value]

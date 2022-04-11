@@ -14,7 +14,7 @@ class BiddingStrategy:
     received_offers: list
 
     p0: float = 1.0
-    p1: float = 0.7
+    p1: float = 0.85
     p2: float = 0.4
     p3: float = 0.5
     window_lower_bound: float = 0.02
@@ -27,7 +27,7 @@ class BiddingStrategy:
         self.my_offers = []
         self.received_offers = []
 
-    def received_bid(self, bid: Bid, **kwargs):
+    def receive_bid(self, bid: Bid, **kwargs):
         if bid is not None:
             self.received_offers.append(bid)
 
@@ -103,7 +103,32 @@ class BiddingStrategy:
     def update(self, learned_data: list, log_fn):
         domain_size = AllBidsList(self.profile.getDomain()).size()
 
-        p1_ratio = 0.6
+        if domain_size < 450:
+            self.p2 = 0.85
+            self.window_upper_bound = 0.1
+            self.window_lower_bound = 0.1
+        elif domain_size < 1500:
+            self.p2 = 0.825
+            self.window_upper_bound = 0.05
+            self.window_lower_bound = 0.05
+        elif domain_size < 4500:
+            self.p2 = 0.8
+            self.window_upper_bound = 0.025
+            self.window_lower_bound = 0.025
+        elif domain_size < 18000:
+            self.p2 = 0.725
+            self.window_lower_bound = 0.0125
+            self.window_upper_bound = 0.0125
+        elif domain_size < 33000:
+            self.p2 = 0.65
+            self.window_upper_bound = 0.0063
+            self.window_lower_bound = 0.0063
+        else:
+            self.p2 = 0.60
+            self.window_upper_bound = 0.0031
+            self.window_lower_bound = 0.0031
+
+        p1_ratio = 0.65
         min_utility, max_utility = get_min_max_utility(self.profile)
 
         if len(learned_data) >= 2:
@@ -113,11 +138,12 @@ class BiddingStrategy:
             if abs(previous_data["p1"] - current_data["p1"]) <= self.epsilon:
                 p1_ratio += 0.1
                 self.p2 += 0.1
-                self.p3 = 0.2
-            if current_data["domain_size"] > previous_data["domain_size"] and abs(previous_data["p1"] - current_data["p1"]) <= self.epsilon:
+                self.p3 = 0.25
+            if current_data["domain_size"] > previous_data["domain_size"] and \
+                    abs(previous_data["p1"] - current_data["p1"]) <= self.epsilon:
                 p1_ratio += 0.1
-                self.window_upper_bound += 0.01
-                self.window_lower_bound -= 0.01
+                self.window_upper_bound *= 2.
+                self.window_lower_bound *= .5
 
         reservation_utility = get_reservation_value(self.profile)
 

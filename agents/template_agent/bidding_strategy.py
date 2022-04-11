@@ -16,7 +16,7 @@ class BiddingStrategy:
         self.my_offers = []
         self.received_offers = []
 
-    def received_bid(self, bid: Bid, **kwargs):
+    def receive_bid(self, bid: Bid, **kwargs):
         """
             This method will be called when a bid received.
         @param bid: Received bid.
