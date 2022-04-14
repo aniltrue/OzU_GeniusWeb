@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 from pathlib import Path
 import time
 
@@ -9,7 +10,13 @@ RESULTS_DIR = Path("results", time.strftime('%Y%m%d-%H%M%S'))
 
 # create results directory if it does not exist
 if not RESULTS_DIR.exists():
-    RESULTS_DIR.mkdir()
+    os.makedirs(RESULTS_DIR)
+
+# Reset storage
+STORAGE_DIR = Path("agent_storage/")
+
+if STORAGE_DIR.exists():
+    shutil.rmtree(STORAGE_DIR)
 
 # Settings to run a negotiation session:
 #   You need to specify the classpath of 2 agents to start a negotiation. Parameters for the agent can be added as a dict (see example)
@@ -31,9 +38,6 @@ tournament_settings = {
         },
         {
             "class": "agents.random_agent.random_agent.RandomAgent",
-        },
-        {
-            "class": "agents.stupid_agent.stupid_agent.StupidAgent",
         },
         {
             "class": "agents.hybrid.hybrid_agent.HybridAgent",

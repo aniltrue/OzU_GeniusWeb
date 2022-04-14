@@ -112,11 +112,11 @@ class TemplateAgent(DefaultParty):
 
                 self.other = str(actor).rsplit("_", 1)[0]
                 # process action done by opponent
-                self.received_bid(action)
+                self.receive_action(action)
         # YourTurn notifies you that it is your turn to act
         elif isinstance(data, YourTurn):
             # execute a turn
-            self.run()
+            self.take_action()
 
         # Finished will be send if the negotiation has ended (through agreement or deadline)
         elif isinstance(data, Finished):
@@ -132,6 +132,9 @@ class TemplateAgent(DefaultParty):
             self.getReporter().log(logging.WARNING, "Ignoring unknown info " + str(data))
 
     def initiate(self):
+        self.last_received_bid = None
+        self.last_generated_bid = None
+
         # Initiate Components
         self.opponent_model = OpponentModel(self.domain, self.profile, self.progress)
         self.bidding_strategy = BiddingStrategy(self.profile, self.progress)
@@ -162,7 +165,8 @@ class TemplateAgent(DefaultParty):
         @param action: Action can be Offer or Accept.
         @return: None
         """
-        self.getConnection().send(action)
+        if get_time(self.progress) < 1.0:
+            self.getConnection().send(action)
 
     def getDescription(self) -> str:
         """
@@ -171,7 +175,7 @@ class TemplateAgent(DefaultParty):
         """
         return "%s" % self.NAME
 
-    def received_bid(self, action: Action):
+    def receive_action(self, action: Action):
         """
             This method will be called when an Action received.
         @param action: Action can be Offer or Accept
@@ -193,7 +197,7 @@ class TemplateAgent(DefaultParty):
             # update opponent model with bid
             self.opponent_model.update(bid)
             # update bidding strategy with bid
-            self.bidding_strategy.received_bid(bid)
+            self.bidding_strategy.receive_bid(bid)
             # update learn model with bid
             if self.learning_model is not None:
                 self.learning_model.receive_bid(bid)
@@ -203,9 +207,11 @@ class TemplateAgent(DefaultParty):
             self.log("Received Bid: %f" % get_utility(self.profile, self.last_received_bid))
 
         elif isinstance(action, Accept):  # If opponent agent accepts my offer.
+            self.learning_model.reach_agreement(self.last_generated_bid, True)
+
             self.log("Opponent Accepted - Utility: %f" % get_utility(self.profile, self.last_generated_bid))
 
-    def run(self):
+    def take_action(self):
         """
             Generate agent's action (Offer or Accept)
         @return: None
@@ -219,12 +225,15 @@ class TemplateAgent(DefaultParty):
 
         # Check acceptance
         if self.acceptance_strategy.is_accepted(self.last_received_bid, bid):
-            self.log("Accepted - My Bid: %f, Received: %f" % (get_utility(self.profile, bid), get_utility(self.profile, self.last_received_bid)))
-            self.getConnection().send(Accept(self.me, self.last_received_bid))
+            self.learning_model.reach_agreement(self.last_received_bid, False)
+
+            self.log("Accepted - My Bid: %f, Received: %f" % (get_utility(self.profile, bid),
+                                                              get_utility(self.profile, self.last_received_bid)))
+            self.send_action(Accept(self.me, self.last_received_bid))
         else:
             self.log("Offered: %f" % get_utility(self.profile, bid))
             self.learning_model.save_bid(bid)
-            self.getConnection().send(Offer(self.me, bid))
+            self.send_action(Offer(self.me, bid))
 
     def log(self, text: str, will_print: bool = True):
         """

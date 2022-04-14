@@ -14,6 +14,9 @@ class LearningModel:
     progress: ProgressTime
     received_bids: list
     my_bids: list
+    acceptance_time: float
+    accepted_bid: Bid
+    opponent_accepted: bool
     opponent_model: OpponentModel
     data: list
 
@@ -24,6 +27,9 @@ class LearningModel:
         self.my_bids = []
         self.opponent_model = kwargs["opponent_model"]
         self.data = []
+        self.acceptance_time = -1
+        self.opponent_accepted = False
+        self.accepted_bid = None
 
     def receive_bid(self, bid: Bid, **kwargs):
         if bid is not None:
@@ -33,6 +39,13 @@ class LearningModel:
 
     def save_bid(self, bid: Bid, **kwargs):
         self.my_bids.append(bid)
+
+    def reach_agreement(self, accepted_bid: Bid, opponent_accepted: bool, **kwargs):
+        time = get_time(self.progress)
+
+        self.accepted_bid = accepted_bid
+        self.opponent_accepted = opponent_accepted
+        self.acceptance_time = time
 
     def save_data(self, storage_dir: str, other: str, **kwargs):
         if other is None or storage_dir is None or len(self.received_bids) < 1:
@@ -61,7 +74,11 @@ class LearningModel:
 
         p1 = float(inv((X.transpose().dot(X))).dot(X.transpose().dot(Y)))
 
-        self.data.append({"p0": p0, "p1": p1, "p2": p2, "domain_size": domain_size})
+        opponent_acceptance_time = -1 if not self.opponent_accepted or self.accepted_bid is None \
+            else self.acceptance_time
+
+        self.data.append({"p0": p0, "p1": p1, "p2": p2, "domain_size": domain_size,
+                          "opponent_acceptance_time": opponent_acceptance_time})
 
         with open(f"{storage_dir}/{other}_data.pkl", "wb") as f:
             pickle.dump(self.data, f)

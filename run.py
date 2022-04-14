@@ -1,4 +1,5 @@
 import json
+import os
 import time
 from pathlib import Path
 
@@ -12,7 +13,7 @@ RESET_STORAGE = False
 
 # create results directory if it does not exist
 if not RESULTS_DIR.exists():
-    RESULTS_DIR.mkdir()
+    os.makedirs(RESULTS_DIR)
 
 # Settings to run a negotiation session:
 #   You need to specify the classpath of 2 agents to start a negotiation. Parameters for the agent can be added as a dict (see example)

@@ -97,9 +97,9 @@ class HybridAgent(DefaultParty):
                     self.log("Data loaded.")
 
                 self.other = str(actor).rsplit("_", 1)[0]
-                self.received_bid(action)
+                self.receive_action(action)
         elif isinstance(data, YourTurn):
-            self.run()
+            self.take_action()
 
         elif isinstance(data, Finished):
             if self.learning_model is not None:
@@ -112,6 +112,9 @@ class HybridAgent(DefaultParty):
             self.getReporter().log(logging.WARNING, "Ignoring unknown info " + str(data))
 
     def initiate(self):
+        self.last_generated_bid = None
+        self.last_received_bid = None
+
         self.opponent_model = OpponentModel(self.domain, self.profile, self.progress, log=self.log)
         self.bidding_strategy = BiddingStrategy(self.profile, self.progress)
         self.acceptance_strategy = AcceptanceStrategy(self.profile, self.progress)
@@ -134,12 +137,13 @@ class HybridAgent(DefaultParty):
         )
 
     def send_action(self, action: Action):
-        self.getConnection().send(action)
+        if get_time(self.progress) < 1.0:
+            self.getConnection().send(action)
 
     def getDescription(self) -> str:
         return "%s" % self.NAME
 
-    def received_bid(self, action: Action):
+    def receive_action(self, action: Action):
         if isinstance(action, Offer):
             if self.opponent_model is None:
                 self.opponent_model = OpponentModel(self.domain, self.profile, self.progress, log=self.log)
@@ -150,7 +154,7 @@ class HybridAgent(DefaultParty):
             bid = cast(Offer, action).getBid()
 
             self.opponent_model.update(bid)
-            self.bidding_strategy.received_bid(bid)
+            self.bidding_strategy.receive_bid(bid)
             if self.learning_model is not None:
                 self.learning_model.receive_bid(bid)
 
@@ -159,10 +163,12 @@ class HybridAgent(DefaultParty):
             self.log("Received Bid: %f/%f" %
                      (get_utility(self.profile, self.last_received_bid), self.opponent_model.get_utility(self.last_received_bid)))
         elif isinstance(action, Accept):
+            self.learning_model.reach_agreement(self.last_generated_bid, True)
+
             self.log("Opponent Accepted - For me: %f, For opponent: %f" %
                      (get_utility(self.profile, self.last_generated_bid), self.opponent_model.get_utility(self.last_generated_bid)))
 
-    def run(self):
+    def take_action(self):
         bid = self.bidding_strategy.generate(log=self.log, opponent_model=self.opponent_model)
         self.last_generated_bid = bid
 
@@ -170,15 +176,17 @@ class HybridAgent(DefaultParty):
             return
 
         if self.acceptance_strategy.is_accepted(self.last_received_bid, bid):
+            self.learning_model.reach_agreement(self.last_received_bid, False)
+
             self.log("Accepted - My Bid: %f/%f, Received: %f/%f" %
                      (get_utility(self.profile, bid), self.opponent_model.get_utility(bid),
                       get_utility(self.profile, self.last_received_bid), self.opponent_model.get_utility(self.last_received_bid)))
-            self.getConnection().send(Accept(self.me, self.last_received_bid))
+            self.send_action(Accept(self.me, self.last_received_bid))
         else:
             self.log("Offered: %f/%f" %
                      (get_utility(self.profile, bid), self.opponent_model.get_utility(bid)))
             self.learning_model.save_bid(bid)
-            self.getConnection().send(Offer(self.me, bid))
+            self.send_action(Offer(self.me, bid))
 
     def log(self, text: str, will_print: bool = False):
         if will_print:

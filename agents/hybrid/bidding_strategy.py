@@ -128,7 +128,7 @@ class BiddingStrategy:
             self.window_upper_bound = 0.0031
             self.window_lower_bound = 0.0031
 
-        p1_ratio = 0.65
+        self.p1 = 0.85
         min_utility, max_utility = get_min_max_utility(self.profile)
 
         if len(learned_data) >= 2:
@@ -136,19 +136,23 @@ class BiddingStrategy:
             current_data = learned_data[-1]
 
             if abs(previous_data["p1"] - current_data["p1"]) <= self.epsilon:
-                p1_ratio += 0.1
+                self.p1 += 0.05
                 self.p2 += 0.1
-                self.p3 = 0.25
+                self.p3 *= 0.5
             if current_data["domain_size"] > previous_data["domain_size"] and \
                     abs(previous_data["p1"] - current_data["p1"]) <= self.epsilon:
-                p1_ratio += 0.1
+                self.p1 += 0.05
                 self.window_upper_bound *= 2.
                 self.window_lower_bound *= .5
+            if abs(previous_data["opponent_acceptance_time"] - current_data["opponent_acceptance_time"]) <= 0.01 and \
+                    previous_data["opponent_acceptance_time"] != -1 and current_data["opponent_acceptance_time"] != -1:
+                self.p1 += 0.05
+                self.p2 += 0.1
+                self.p3 *= 0.5
 
         reservation_utility = get_reservation_value(self.profile)
 
         self.p0 = min(1.0, max_utility)
         self.p2 = max([min_utility, self.p2, reservation_utility])
-        self.p1 = (self.p2 + self.p0) * p1_ratio
 
         log_fn("P0: %f, P1: %f, P2: %f" % (self.p0, self.p1, self.p2))

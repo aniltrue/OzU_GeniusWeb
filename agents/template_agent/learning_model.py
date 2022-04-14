@@ -27,6 +27,13 @@ class LearningModel:
     def save_bid(self, bid: Bid, **kwargs):
         self.my_bids.append(bid)
 
+    def reach_agreement(self, accepted_bid: Bid, opponent_accepted: bool, **kwargs):
+        time = get_time(self.progress)
+
+        self.accepted_bid = accepted_bid
+        self.opponent_accepted = opponent_accepted
+        self.acceptance_time = time
+
     def save_data(self, storage_dir: str, other: str, **kwargs):
         # If there is no information
         if other is None or storage_dir is None:
