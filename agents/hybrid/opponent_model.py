@@ -11,6 +11,7 @@ from scipy.stats import chisquare
 class OpponentModel:
     """
         Frequency Based Opponent Modelling implementation:
+
             Rethinking Frequency Opponent Modeling in Automated Negotiation
             https://www.researchgate.net/publication/320200219_Rethinking_Frequency_Opponent_Modeling_in_Automated_Negotiation
     """

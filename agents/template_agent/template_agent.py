@@ -33,6 +33,8 @@ from agents.template_agent.learning_model import LearningModel
 class TemplateAgent(DefaultParty):
     """
         Template Agent
+
+        Copy the 'template_agent' directory and change the name of it.
     """
     NAME: str = "Template Agent"
 
@@ -63,8 +65,8 @@ class TemplateAgent(DefaultParty):
     def notifyChange(self, data: Inform):
         """
             This method will be called when an information received.
-        @param data: Information
-        @return: None
+        :param data: Information
+        :return: None
         """
         # a Settings message is the first message that will be sent to your
         # agent containing all the information about the negotiation session.
@@ -152,7 +154,7 @@ class TemplateAgent(DefaultParty):
     def getCapabilities(self) -> Capabilities:
         """
             Capabilities of Agent
-        @return: Capabilities
+        :return: Capabilities
         """
         return Capabilities(
             set(["SAOP", "Learn"]),
@@ -162,8 +164,8 @@ class TemplateAgent(DefaultParty):
     def send_action(self, action: Action):
         """
             Send an action
-        @param action: Action can be Offer or Accept.
-        @return: None
+        :param action: Action can be Offer or Accept.
+        :return: None
         """
         if get_time(self.progress) < 1.0:
             self.getConnection().send(action)
@@ -171,15 +173,15 @@ class TemplateAgent(DefaultParty):
     def getDescription(self) -> str:
         """
             Description of your agent.
-        @return: Description as String
+        :return: Description as String
         """
         return "%s" % self.NAME
 
     def receive_action(self, action: Action):
         """
             This method will be called when an Action received.
-        @param action: Action can be Offer or Accept
-        @return: None
+        :param action: Action can be Offer or Accept
+        :return: None
         """
         if isinstance(action, Offer):
             # If an offer received.
@@ -214,7 +216,7 @@ class TemplateAgent(DefaultParty):
     def take_action(self):
         """
             Generate agent's action (Offer or Accept)
-        @return: None
+        :return: None
         """
         # Generated bid by bidding strategy if the agent will not accept.
         bid = self.bidding_strategy.generate()
@@ -238,9 +240,9 @@ class TemplateAgent(DefaultParty):
     def log(self, text: str, will_print: bool = True):
         """
             Log information.
-        @param text: Log Text as String
-        @param will_print: Log text will be printed on console.
-        @return: None
+        :param text: Log Text as String
+        :param will_print: Log text will be printed on console.
+        :return: None
         """
         if will_print:
             print(text)

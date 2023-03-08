@@ -8,6 +8,8 @@ from agents.template_agent.utils import *
 class OpponentModel:
     """
         Opponent Model
+
+        As a default, Classical Frequentist Opponent Model is implemented.
     """
     profile: LinearAdditiveUtilitySpace
     progress: ProgressTime
@@ -16,6 +18,13 @@ class OpponentModel:
     issues: dict    # Issues
 
     def __init__(self, domain: Domain, profile: LinearAdditiveUtilitySpace, progress: ProgressTime, **kwargs):
+        """
+            Constructor
+        :param domain: Negotiation domain
+        :param profile: Linear additive profile
+        :param progress: Negotiation session progress time
+        :param kwargs: Other
+        """
         self.domain = domain
         self.profile = profile
         self.progress = progress
@@ -25,9 +34,9 @@ class OpponentModel:
 
     def update(self, bid: Bid, **kwargs):
         """
-            This method will be called when a bid received.
-        @param bid: Received bid
-        @return: None
+            This method is called when a bid received.
+        :param bid: Received bid
+        :return: Nothing
         """
 
         # Add into offers list
@@ -43,8 +52,8 @@ class OpponentModel:
     def get_utility(self, bid: Bid) -> float:
         """
             This method calculates estimated utility.
-        @param bid: The bid will be calculated.
-        @return: Estimated Utility
+        :param bid: The bid will be calculated.
+        :return: Estimated Utility
         """
         if bid is None:
             return 0.0
@@ -65,14 +74,19 @@ class Issue:
     value_weights: dict    # Value Weights
 
     def __init__(self, values: DiscreteValueSet, **kwargs):
+        """
+            Constructor
+        :param values: The set of discrete value set
+        :param kwargs: Others
+        """
         # Initial value weights are zero
         self.value_weights = {value: 0.0 for value in values}
 
     def update(self, value: Value, **kwargs):
         """
             This method will be called when a bid received.
-        @param value: Received bid
-        @return: None
+        :param value: Received bid
+        :return: None
         """
         if value is None:
             return
@@ -82,8 +96,8 @@ class Issue:
     def get_utility(self, value: Value) -> float:
         """
             Calculate estimated utility of the issue with value
-        @param value: Value of Issue
-        @return: Estimated Utility
+        :param value: The value of Issue
+        :return: Estimated Utility
         """
         if value is None:
             return 0.0

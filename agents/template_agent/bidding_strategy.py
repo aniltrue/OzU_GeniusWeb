@@ -4,6 +4,8 @@ from agents.template_agent.utils import *
 class BiddingStrategy:
     """
         Bidding Strategy
+
+        As a default, Linear Time-Based bidding strategy is implemented.
     """
     profile: LinearAdditiveUtilitySpace
     progress: ProgressTime
@@ -19,9 +21,9 @@ class BiddingStrategy:
     def receive_bid(self, bid: Bid, **kwargs):
         """
             This method will be called when a bid received.
-        @param bid: Received bid.
-        @param kwargs:
-        @return: None
+        :param bid: Received bid.
+        :param kwargs:
+        :return: None
         """
         if bid is not None:
             self.received_offers.append(bid)
@@ -29,7 +31,7 @@ class BiddingStrategy:
     def generate(self, **kwargs) -> Bid:
         """
             Generate a bid.
-        @return: Bid will be offered.
+        :return: Bid will be offered.
         """
         # Time
         time = get_time(self.progress)
