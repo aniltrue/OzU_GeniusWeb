@@ -2,6 +2,9 @@
 
 This is the project repository for CS451/551 Project.
 
+Join our [Discord server](https://discord.gg/qvXK3DJTuz)!
+Read the [Call for Participants](docs/Automated_Negotiation_League_2023.pdf)!
+
 ## Overview
 - directories:
     - `agents`: Contains directories with the agents. The `template_agent` directory contains the template for this competition.
@@ -17,7 +20,7 @@ This is the project repository for CS451/551 Project.
 ## Installation
 Download or clone this repository. *Note that if you fork this repository you cannot make it private*, which is default behaviour of GitHub. This will cause your code to be publicly visible if you push it to your forked repository.
 
-We recommend using Python >= 3.9 as this version will be used during the actual competition. The required dependencies are listed in the `requirements.txt` file and can be installed through `pip install -r requirements.txt`. We advise you to create a Python virtual environment to install the dependencies in isolation (e.g. `python3.9 -m venv .venv`, see also [here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment))
+We recommend using Python 3.9 as this version will be used during the actual competition. The required dependencies are listed in the `requirements.txt` file and can be installed through `pip install -r requirements.txt`. We advise you to create a Python virtual environment to install the dependencies in isolation (e.g. `python3.9 -m venv .venv`, see also [here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment))
 
 As already mentioned, should you need any additional dependencies, please notify me. A few of the most common dependencies are already listed in `requirements_allowed.txt` file. 
 
