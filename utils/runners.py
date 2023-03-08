@@ -1,4 +1,3 @@
-import math
 import shutil
 from collections import defaultdict
 from itertools import permutations
@@ -24,7 +23,7 @@ from uri.uri import URI
 from utils.ask_proceed import ask_proceed
 
 
-def run_session(settings, clean_storage: bool = False) -> Tuple[dict, dict]:
+def run_session(settings) -> Tuple[dict, dict]:
     agents = settings["agents"]
     profiles = settings["profiles"]
     deadline_time_ms = settings["deadline_time_ms"]
@@ -39,8 +38,6 @@ def run_session(settings, clean_storage: bool = False) -> Tuple[dict, dict]:
         if "parameters" in agent:
             if "storage_dir" in agent["parameters"]:
                 storage_dir = Path(agent["parameters"]["storage_dir"])
-                if storage_dir.exists() and clean_storage:
-                    shutil.rmtree(storage_dir)
                 if not storage_dir.exists():
                     storage_dir.mkdir(parents=True)
 
