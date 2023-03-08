@@ -5,6 +5,7 @@ This is the project repository for CS451/551 Project.
 ## Overview
 - directories:
     - `agents`: Contains directories with the agents. The `template_agent` directory contains the template for this competition.
+    - `agents/ANL2022` Contains directories with the agents in ANAC 2022 competition.
     - `domains`: Contains the domains which are problems over which the agents are supposed to negotiate.
     - `utils`: Arbitrary utilities to run sessions and process results.
 - files:
