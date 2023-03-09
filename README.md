@@ -1,6 +1,6 @@
 # CS 551 Project
 
-This is the project repository for CS451/551 Project.
+This is the project repository for CS551 Project.
 
 Join our [Discord server](https://discord.gg/qvXK3DJTuz)!
 Read the [Call for Participants](docs/Automated_Negotiation_League_2023.pdf)!
