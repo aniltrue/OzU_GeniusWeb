@@ -3,7 +3,7 @@
 This is the project repository for CS551 Project.
 
 Join our [Discord server](https://discord.gg/qvXK3DJTuz)!
-Read the [Call for Participants](docs/Automated_Negotiation_League_2023.pdf)!
+Read the [Call for Participants](https://github.com/aniltrue/OzU_GeniusWeb/blob/master/docs/Automated_Negotiation_League_2023.pdf)!
 
 ## Overview
 - directories:
@@ -51,5 +51,5 @@ The `template_agent` is based on BOA components. You should implement (change) t
 - `learning_model.py`: The challenge of 2023 ANAC competition is learning from the previous negotiation sessions. At the end of each negotiation session, you will get the opponent's name to store corresponding information to utilize in the next sessions where you have the same opponent.
 
 ## Notes
-- You are allowed to store data after the negotiation was finished ("Finished" object received) to use for future sessions. This allows for learning opponent behaviour over time and responding to it. The directory to save this data to is passed to the agent as parameter (`storage_dir`). In the template agent the path to this directory is assign to the `self.storage_dir` variable. Your agent is run parallel against multiple opponents during the final tournament, so make sure to handle this properly. Read section 3 of the [CfP](docs/ANL_2022_CfP.pdf) for information on this.
+- You are allowed to store data after the negotiation was finished ("Finished" object received) to use for future sessions. This allows for learning opponent behaviour over time and responding to it. The directory to save this data to is passed to the agent as parameter (`storage_dir`). In the template agent the path to this directory is assign to the `self.storage_dir` variable. Your agent is run parallel against multiple opponents during the final tournament, so make sure to handle this properly. Read section 3 of the [CfP](https://github.com/aniltrue/OzU_GeniusWeb/blob/master/docs/Automated_Negotiation_League_2023.pdf) for information on this.
 - If you want to test your agent in a single session, you can use `run.py` instead of `run_tournament.py` file. In `run.py` file, `RESET_STORAGE` variable decides to clear the storage or not. If you want to test your agent in learning challenge, you should set `RESET_STORAGE` as `False`. Otherwise, you should set it as `True` to clear all the stored data.
