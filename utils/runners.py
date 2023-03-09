@@ -1,4 +1,3 @@
-import shutil
 from collections import defaultdict
 from itertools import permutations
 from math import factorial, prod
@@ -19,7 +18,7 @@ from geniusweb.simplerunner.NegoRunner import StdOutReporter
 from geniusweb.simplerunner.Runner import Runner
 from pyson.ObjectMapper import ObjectMapper
 from uri.uri import URI
-from BasicReporter import BasicReporter
+from utils.BasicReporter import BasicReporter
 
 from utils.ask_proceed import ask_proceed
 
