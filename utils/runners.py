@@ -19,6 +19,7 @@ from geniusweb.simplerunner.NegoRunner import StdOutReporter
 from geniusweb.simplerunner.Runner import Runner
 from pyson.ObjectMapper import ObjectMapper
 from uri.uri import URI
+from BasicReporter import BasicReporter
 
 from utils.ask_proceed import ask_proceed
 
@@ -88,7 +89,7 @@ def run_session(settings) -> Tuple[dict, dict]:
     settings_obj = ObjectMapper().parse(settings_full, NegoSettings)
 
     # create the negotiation session runner object
-    runner = Runner(settings_obj, ClassPathConnectionFactory(), StdOutReporter(), 0)
+    runner = Runner(settings_obj, ClassPathConnectionFactory(), BasicReporter(), 0)
 
     # run the negotiation session
     runner.run()

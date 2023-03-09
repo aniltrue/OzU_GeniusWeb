@@ -28,16 +28,12 @@ tournament_settings = {
             "class": "agents.boulware_agent.boulware_agent.BoulwareAgent",
         },
         {
-            "class": "agents.conceder_agent.conceder_agent.ConcederAgent",
+            "class": "agents.ANL2022.agent007.agent007.Agent007",
+            "parameters": {"storage_dir": "agent_storage/Agent007"},
         },
         {
-            "class": "agents.hardliner_agent.hardliner_agent.HardlinerAgent",
-        },
-        {
-            "class": "agents.linear_agent.linear_agent.LinearAgent",
-        },
-        {
-            "class": "agents.random_agent.random_agent.RandomAgent",
+            "class": "agents.ANL2022.agentfish.agentfish.AgentFish",
+            "parameters": {"storage_dir": "agent_storage/AgentFish"},
         },
         {
             "class": "agents.hybrid.hybrid_agent.HybridAgent",
@@ -51,10 +47,6 @@ tournament_settings = {
     "profile_sets": [
         ["domains/domain00/profileA.json", "domains/domain00/profileB.json"],
         ["domains/domain01/profileA.json", "domains/domain01/profileB.json"],
-        ["domains/domain02/profileA.json", "domains/domain02/profileB.json"],
-        ["domains/domain03/profileA.json", "domains/domain03/profileB.json"],
-        ["domains/domain04/profileA.json", "domains/domain04/profileB.json"],
-        ["domains/domain05/profileA.json", "domains/domain05/profileB.json"],
     ],
     "deadline_time_ms": 10000,
 }
