@@ -1,4 +1,4 @@
-# CS 451/551 Project
+# CS 551 Project
 
 This is the project repository for CS451/551 Project.
 
