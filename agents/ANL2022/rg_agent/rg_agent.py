@@ -29,7 +29,7 @@ from geniusweb.progress.ProgressTime import ProgressTime
 from geniusweb.references.Parameters import Parameters
 from tudelft_utilities_logging.ReportToLogger import ReportToLogger
 
-from agents.template_agent.utils.opponent_model import OpponentModel
+from agents.ANL2022.rg_agent.utils.opponent_model import OpponentModel
 
 
 class RGAgent(DefaultParty):

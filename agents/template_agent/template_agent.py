@@ -237,7 +237,7 @@ class TemplateAgent(DefaultParty):
             self.learning_model.save_bid(bid)
             self.send_action(Offer(self.me, bid))
 
-    def log(self, text: str, will_print: bool = True):
+    def log(self, text: str, will_print: bool = False):
         """
             Log information.
         :param text: Log Text as String
