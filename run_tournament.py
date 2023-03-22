@@ -28,12 +28,16 @@ tournament_settings = {
             "class": "agents.boulware_agent.boulware_agent.BoulwareAgent",
         },
         {
-            "class": "agents.ANL2022.agent007.agent007.Agent007",
-            "parameters": {"storage_dir": "agent_storage/Agent007"},
+            "class": "agents.ANL2022.charging_boul.charging_boul.ChargingBoul",
+            "parameters": {"storage_dir": "agent_storage/ChargingBoul"},
         },
         {
-            "class": "agents.ANL2022.agentfish.agentfish.AgentFish",
-            "parameters": {"storage_dir": "agent_storage/AgentFish"},
+            "class": "agents.ANL2022.dreamteam109_agent.dreamteam109_agent.DreamTeam109Agent",
+            "parameters": {"storage_dir": "agent_storage/DreamTeam109Agent"},
+        },
+        {
+            "class": "agents.ANL2022.LuckyAgent2022.LuckyAgent2022.LuckyAgent2022",
+            "parameters": {"storage_dir": "agent_storage/LuckyAgent2022"},
         },
         {
             "class": "agents.hybrid.hybrid_agent.HybridAgent",

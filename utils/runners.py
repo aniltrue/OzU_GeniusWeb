@@ -24,7 +24,7 @@ from utils.BasicReporter import BasicReporter
 from utils.ask_proceed import ask_proceed
 
 
-def run_session(settings, reset_storage: bool) -> Tuple[dict, dict]:
+def run_session(settings, reset_storage: bool = True) -> Tuple[dict, dict]:
     agents = settings["agents"]
     profiles = settings["profiles"]
     deadline_time_ms = settings["deadline_time_ms"]
