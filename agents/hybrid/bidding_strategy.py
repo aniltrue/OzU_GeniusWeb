@@ -57,8 +57,9 @@ class BiddingStrategy:
             opponent_model = kwargs["opponent_model"]
 
             for bid in bids:
-                if selected_bid is None and bid not in self.my_offers[-5:]:
-                    selected_bid = bid
+                if selected_bid is None:
+                    if bid not in self.my_offers[-5:]:
+                        selected_bid = bid
                 elif opponent_model.get_utility(bid) * get_utility(self.profile, bid) > \
                         opponent_model.get_utility(selected_bid) * get_utility(self.profile, selected_bid) and \
                         bid not in self.my_offers[-5:]:
