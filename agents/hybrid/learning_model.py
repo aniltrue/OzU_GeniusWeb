@@ -48,7 +48,7 @@ class LearningModel:
         self.acceptance_time = time
 
     def save_data(self, storage_dir: str, other: str, **kwargs):
-        if other is None or storage_dir is None or len(self.received_bids) < 1:
+        if other is None or storage_dir is None or len(self.received_bids) < 2:
             return
 
         domain_size = AllBidsList(self.profile.getDomain()).size()

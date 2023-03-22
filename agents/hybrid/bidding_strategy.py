@@ -52,14 +52,21 @@ class BiddingStrategy:
         bids = get_bids_at(self.profile, target_utility, self.window_lower_bound, self.window_upper_bound)
 
         if len(bids) > 0:
-            selected_bid = bids[0]
+            selected_bid = None
 
             opponent_model = kwargs["opponent_model"]
 
             for bid in bids:
-                if opponent_model.get_utility(bid) * get_utility(self.profile, bid) > \
-                        opponent_model.get_utility(selected_bid) * get_utility(self.profile, selected_bid):
+                if selected_bid is None and bid not in self.my_offers[-5:]:
                     selected_bid = bid
+                elif opponent_model.get_utility(bid) * get_utility(self.profile, bid) > \
+                        opponent_model.get_utility(selected_bid) * get_utility(self.profile, selected_bid) and \
+                        bid not in self.my_offers[-5:]:
+
+                    selected_bid = bid
+
+            if selected_bid is None:
+                selected_bid = get_bid_at(self.profile, target_utility)
         else:
             selected_bid = get_bid_at(self.profile, target_utility)
 

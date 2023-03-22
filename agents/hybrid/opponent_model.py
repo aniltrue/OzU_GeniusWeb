@@ -95,7 +95,7 @@ class OpponentModel:
         total_issue_weights = sum([issue_obj.weight for issue_obj in self.issues.values()])
 
         for issue_obj in self.issues.values():
-            issue_obj.weight /= total_issue_weights
+            issue_obj.weight /= total_issue_weights + 1e-10
 
     def get_utility(self, bid: Bid) -> float:
         if bid is None:
@@ -127,7 +127,7 @@ class Issue:
 
         self.value_counter[value] += 1.
 
-        max_value = max(self.value_counter.values())
+        max_value = max(self.value_counter.values()) + 1e-10
 
         self.value_weights = {value: math.pow(self.value_counter[value], self.gamma) / math.pow(max_value, self.gamma)
                               for value in self.value_weights.keys()}
