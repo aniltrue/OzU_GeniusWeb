@@ -120,3 +120,32 @@ def get_reservation_value(profile: LinearAdditiveUtilitySpace) -> float:
         return get_utility(profile, profile.getReservationBid())
 
     return -1.0
+
+
+def get_move(my_utility_change: float, opponent_utility_change: float, threshold: float = 0.03) -> str:
+    """
+        This method provides the negotiation move.
+    :param my_utility_change: Utility change between two bid for our agent
+    :param opponent_utility_change: Utility change between two bid for the opponent
+    :param threshold: Equal threshold, as a default: 0.03
+    :return: Move
+    """
+    if abs(my_utility_change) < threshold and abs(opponent_utility_change) < threshold:
+        return "Silent"
+
+    if abs(my_utility_change) < threshold and opponent_utility_change > 0.:
+        return "Nice"
+
+    if my_utility_change < 0 and opponent_utility_change >= 0:
+        return "Concession"
+
+    if my_utility_change <= 0 and opponent_utility_change < 0:
+        return "Unfortunate"
+
+    if my_utility_change > 0 and opponent_utility_change <= 0:
+        return "Selfish"
+
+    if my_utility_change > 0 and opponent_utility_change > 0:
+        return "Fortunate"
+
+    return ""
