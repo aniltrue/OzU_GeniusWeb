@@ -9,7 +9,7 @@ from utils.runners import run_session
 RESULTS_DIR = Path("results", time.strftime('%Y%m%d-%H%M%S'))
 
 # Reset Stored Data. If you want to use previous stored data, make it false. If you want to clean stored data, make it true.
-RESET_STORAGE = False
+RESET_STORAGE = True
 
 # create results directory if it does not exist
 if not RESULTS_DIR.exists():

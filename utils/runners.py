@@ -1,3 +1,4 @@
+import shutil
 from collections import defaultdict
 from itertools import permutations
 from math import factorial, prod
@@ -23,7 +24,7 @@ from utils.BasicReporter import BasicReporter
 from utils.ask_proceed import ask_proceed
 
 
-def run_session(settings) -> Tuple[dict, dict]:
+def run_session(settings, reset_storage: bool) -> Tuple[dict, dict]:
     agents = settings["agents"]
     profiles = settings["profiles"]
     deadline_time_ms = settings["deadline_time_ms"]
@@ -38,6 +39,10 @@ def run_session(settings) -> Tuple[dict, dict]:
         if "parameters" in agent:
             if "storage_dir" in agent["parameters"]:
                 storage_dir = Path(agent["parameters"]["storage_dir"])
+
+                if reset_storage and storage_dir.exists():
+                    shutil.rmtree(storage_dir)
+
                 if not storage_dir.exists():
                     storage_dir.mkdir(parents=True)
 
