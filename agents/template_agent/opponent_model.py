@@ -9,13 +9,14 @@ class OpponentModel:
     """
         Opponent Model
 
-        As a default, Classical Frequentist Opponent Model is implemented.
+        As a default, Classical Frequentist Opponent Model is implemented in Hardheaded.
     """
     profile: LinearAdditiveUtilitySpace
     progress: ProgressTime
     offers: list    # Received bids
     domain: Domain  # Agent's domain
     issues: dict    # Issues
+    alpha: float    # Parameter for Issue Weight update
 
     def __init__(self, domain: Domain, profile: LinearAdditiveUtilitySpace, progress: ProgressTime, **kwargs):
         """
@@ -30,7 +31,10 @@ class OpponentModel:
         self.progress = progress
         self.offers = []
 
+        self.alpha = 0.1
+
         self.issues = {issue: Issue(values) for issue, values in domain.getIssuesValues().items()}
+        self.normalize()
 
     def update(self, bid: Bid, **kwargs):
         """
@@ -49,6 +53,26 @@ class OpponentModel:
         for issue_name, issue_obj in self.issues.items():
             issue_obj.update(bid.getValue(issue_name), **kwargs)
 
+        # Update issue weights
+        if len(self.offers) >= 2:
+            self.update_issue_weights()
+
+        # Renormalize
+        self.normalize()
+
+    def update_issue_weights(self):
+        """
+            This method updates the issue weights by considering last two consecutive bids.
+        :return: Nothing
+        """
+        t = get_time(self.progress)
+
+        last_two_bids = self.offers[-2:]
+
+        for issue_name, issue_obj in self.issues.items():
+            if last_two_bids[0].getValue(issue_name) == last_two_bids[1].getValue(issue_name):
+                issue_obj.weight += self.alpha * (1. - t)
+
     def get_utility(self, bid: Bid) -> float:
         """
             This method calculates estimated utility.
@@ -65,12 +89,29 @@ class OpponentModel:
 
         return total
 
+    def normalize(self):
+        """
+            This method normalize the Value and Issue weights.
+             - Value weight must be in range [0.0, 1.0]
+             - Sum of issue weights must be 1.0
+        :return: Nothing
+        """
+        total_issue_weight = 0.
+        for issue_name, issue_obj in self.issues.items():
+            total_issue_weight += issue_obj.weight
+            max_val = max(issue_obj.value_weights.values())
+
+            for value_name in issue_obj.value_weights:
+                issue_obj.value_weights[value_name] /= max_val
+
+        for issue_obj in self.issues.values():
+            issue_obj.weight /= total_issue_weight
 
 class Issue:
     """
         This class can be used to estimate issue weight and value weights.
     """
-    weight: float = 0.0    # Issue Weight
+    weight: float = 1.0    # Issue Weight
     value_weights: dict    # Value Weights
 
     def __init__(self, values: DiscreteValueSet, **kwargs):
@@ -80,7 +121,7 @@ class Issue:
         :param kwargs: Others
         """
         # Initial value weights are zero
-        self.value_weights = {value: 0.0 for value in values}
+        self.value_weights = {value: 0.0 + 1e-10 for value in values}
 
     def update(self, value: Value, **kwargs):
         """
@@ -91,7 +132,7 @@ class Issue:
         if value is None:
             return
 
-        pass
+        self.value_weights[value] += 1.
 
     def get_utility(self, value: Value) -> float:
         """
