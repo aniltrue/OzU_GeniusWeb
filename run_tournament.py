@@ -69,3 +69,5 @@ tournament_results_summary.to_csv(RESULTS_DIR.joinpath("tournament_results_summa
 
 # Call our extractor for more detailed tournament results
 extract(RESULTS_DIR.joinpath("tournament_results.json"), RESULTS_DIR)
+
+print("Tournament ends.")
