@@ -24,7 +24,7 @@ class OpponentModel:
         :param domain: Negotiation domain
         :param profile: Linear additive profile
         :param progress: Negotiation session progress time
-        :param kwargs: Other
+        :param kwargs: Additional parameters if needed
         """
         self.domain = domain
         self.profile = profile
@@ -40,6 +40,7 @@ class OpponentModel:
         """
             This method is called when a bid received.
         :param bid: Received bid
+        :param kwargs: Additional parameters if needed
         :return: Nothing
         """
 
@@ -118,7 +119,7 @@ class Issue:
         """
             Constructor
         :param values: The set of discrete value set
-        :param kwargs: Others
+        :param kwargs: Additional parameters if needed
         """
         # Initial value weights are zero
         self.value_weights = {value: 0.0 + 1e-10 for value in values}
@@ -127,6 +128,7 @@ class Issue:
         """
             This method will be called when a bid received.
         :param value: Received bid
+        :param kwargs: Additional parameters if needed
         :return: None
         """
         if value is None:

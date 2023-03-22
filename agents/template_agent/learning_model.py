@@ -18,7 +18,7 @@ class LearningModel:
             Constructor
         :param profile: Linear additive profile
         :param progress: Negotiation session progress time
-        :param kwargs: Other
+        :param kwargs: Additional parameters if needed
         """
         self.profile = profile
         self.progress = progress
@@ -30,7 +30,7 @@ class LearningModel:
         """
             This method is called when a bid is received from the opponent.
         :param bid: Received bid
-        :param kwargs: Other
+        :param kwargs: Additional parameters if needed
         :return: Nothing
         """
         if bid is not None:
@@ -39,13 +39,20 @@ class LearningModel:
     def save_bid(self, bid: Bid, **kwargs):
         """
             Save
-        :param bid:
-        :param kwargs:
-        :return:
+        :param bid: Offered bid
+        :param kwargs: Additional parameters if needed
+        :return: Nothing
         """
         self.my_bids.append(bid)
 
     def reach_agreement(self, accepted_bid: Bid, opponent_accepted: bool, **kwargs):
+        """
+            This method is called when an agreement is reached.
+        :param accepted_bid: Accepted bid
+        :param opponent_accepted: If the opponent accepted our bid, or we accepted the opponent's bid.
+        :param kwargs: Additional parameters if needed
+        :return: Nothing
+        """
         time = get_time(self.progress)
 
         self.accepted_bid = accepted_bid
@@ -57,7 +64,7 @@ class LearningModel:
             This method is called at the end of negotiation session to save learning data
         :param storage_dir: Storage directory
         :param opponent_agent: The name of opponent agent
-        :param kwargs: Others
+        :param kwargs: Additional parameters if needed
         :return: Nothing
         """
         # If there is no information
@@ -73,7 +80,7 @@ class LearningModel:
             This method is called at the beginning of the negotiation session to get learned data
         :param storage_dir: Storage directory
         :param opponent_agent: The name of the opponent agent
-        :param kwargs: Others
+        :param kwargs: Additional parameters if needed
         :return: Learned data as directory
         """
         self.data = {}

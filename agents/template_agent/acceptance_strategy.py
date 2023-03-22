@@ -15,7 +15,7 @@ class AcceptanceStrategy:
             Constructor
         :param profile: Linear additive profile
         :param progress: Negotiation session progress time
-        :param kwargs: Other
+        :param kwargs: Additional parameters if needed
         """
         self.profile = profile
         self.progress = progress
@@ -25,6 +25,7 @@ class AcceptanceStrategy:
             Decide received_bid will be accepted, or not
         :param received_bid: Received Bid
         :param generated_bid: Generated Bid by Bidding Strategy if the agent will not accept.
+        :param kwargs: Additional parameters if needed.
         :return: Accepted or not, bool.
         """
 

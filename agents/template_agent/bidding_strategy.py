@@ -22,7 +22,7 @@ class BiddingStrategy:
         """
             This method will be called when a bid received.
         :param bid: Received bid.
-        :param kwargs:
+        :param kwargs: Additional parameters if needed
         :return: None
         """
         if bid is not None:
@@ -31,6 +31,7 @@ class BiddingStrategy:
     def generate(self, **kwargs) -> Bid:
         """
             Generate a bid.
+        :param kwargs: Additional parameters if needed
         :return: Bid will be offered.
         """
         # Time

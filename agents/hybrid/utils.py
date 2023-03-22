@@ -17,9 +17,9 @@ from time import time
 def get_utility(profile: LinearAdditiveUtilitySpace, bid: Bid) -> float:
     """
         Utility of a bid.
-    @param profile: Profile
-    @param bid: Bid
-    @return: Utility of bid
+    :param profile: Profile
+    :param bid: Bid
+    :return: Utility of bid
     """
     return float(profile.getUtility(bid))
 
@@ -27,9 +27,9 @@ def get_utility(profile: LinearAdditiveUtilitySpace, bid: Bid) -> float:
 def get_bid_at(profile: LinearAdditiveUtilitySpace, utility: float) -> Bid:
     """
         Get the closest bid to desired utility
-    @param profile: Profile
-    @param utility: Desired Utility
-    @return: The closest bid to desired utility
+    :param profile: Profile
+    :param utility: Desired Utility
+    :return: The closest bid to desired utility
     """
     domain = profile.getDomain()
     all_bids = AllBidsList(domain)
@@ -47,11 +47,11 @@ def get_bids_at(profile: LinearAdditiveUtilitySpace, utility: float, lower_bound
                 upper_bound: float = 0.02) -> list:
     """
         Get bids between [utility - lower_bound, utility + upper_bound]
-    @param profile: Profile
-    @param utility: Desired Utility
-    @param lower_bound: Lower bound of the Range
-    @param upper_bound: Upper bound of the Range
-    @return: List of bids in that range
+    :param profile: Profile
+    :param utility: Desired Utility
+    :param lower_bound: Lower bound of the Range
+    :param upper_bound: Upper bound of the Range
+    :return: List of bids in that range
     """
     domain = profile.getDomain()
     all_bids = AllBidsList(domain)
@@ -68,8 +68,8 @@ def get_bids_at(profile: LinearAdditiveUtilitySpace, utility: float, lower_bound
 def get_min_max_utility(profile: LinearAdditiveUtilitySpace) -> (float, float):
     """
         Get the minimum and maximum utility value in bid space
-    @param profile: Profile
-    @return: Minimum and maximum utility as float
+    :param profile: Profile
+    :return: Minimum and maximum utility as float
     """
     domain = profile.getDomain()
     all_bids = AllBidsList(domain)
@@ -87,8 +87,8 @@ def get_min_max_utility(profile: LinearAdditiveUtilitySpace) -> (float, float):
 def get_mean_stdev(profile: LinearAdditiveUtilitySpace) -> (float, float):
     """
         Mean and standard derivation of bid space
-    @param profile: Profile
-    @return: Mean and standard derivation values as float
+    :param profile: Profile
+    :return: Mean and standard derivation values as float
     """
     domain = profile.getDomain()
     all_bids = AllBidsList(domain)
@@ -105,8 +105,8 @@ def get_mean_stdev(profile: LinearAdditiveUtilitySpace) -> (float, float):
 def get_time(progress: ProgressTime) -> float:
     """
         Get current time. Initially, it is 0; and it is 1 at the end of the negotiation.
-    @param progress: ProgressTime object to calculate t
-    @return: Current time as float in range [0, 1]
+    :param progress: ProgressTime object to calculate t
+    :return: Current time as float in range [0, 1]
     """
     return progress.get(int(time() * 1000))
 
